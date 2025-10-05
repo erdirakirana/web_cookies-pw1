@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Cookies Website</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8e4c9, #f0d1a5, #deb887, #d4a276);
+      background-size: 300% 300%;
+      animation: gradientMove 10s ease infinite;
+      color: #4b2e05;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Tombol titik tiga */
+    .menu-toggle {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background-color: #d7a86e;
+      border: none;
+      color: #4b2e05;
+      font-size: 24px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .menu-toggle:hover {
+      background-color: #f2c48d;
+    }
+
+    /* Sidebar */
+    nav {
+      width: 220px;
+      background: linear-gradient(180deg, #f2c48d, #d7a86e);
+      padding: 20px;
+      box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+      position: fixed;
+      height: 100%;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      transition: transform 0.4s ease;
+    }
+
+    nav.closed {
+      transform: translateX(-100%);
+    }
+
+    nav h1 {
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #4b2e05;
+    }
+
+    nav a {
+      display: block;
+      text-decoration: none;
+      color: #4b2e05;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      transition: all 0.3s;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+      transform: translateX(5px);
+    }
+
+    /* Main content */
+    main {
+      margin-left: 240px;
+      padding: 30px;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      transition: margin-left 0.4s ease;
+    }
+
+    nav.closed + main {
+      margin-left: 0;
+    }
+
+    section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      color: #4b2e05;
+      border-bottom: 2px solid #b67c3a;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    p {
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      width: 300px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 90%;
+      height: auto;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #8b5a2b;
+    }
+
+    th {
+      background-color: #deb887;
+    }
+
+    /* Kontak section */
+    .kontak {
+      background-color: rgba(255,255,255,0.8);
+      padding: 20px;
+      border-radius: 10px;
+      width: fit-content;
+    }
+
+    .kontak a {
+      display: block;
+      color: #4b2e05;
+      text-decoration: none;
+      margin: 5px 0;
+      font-weight: 500;
+    }
+
+    .kontak a:hover {
+      text-decoration: underline;
+    }
+
+    /* Cover section */
+    #cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #f8e4c9cc, #f0d1a5cc);
+      transition: opacity 1s ease, visibility 1s ease;
+      z-index: 5;
+    }
+
+    #cover.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #cover h1 {
+      font-size: 3em;
+      color: #4b2e05;
+    }
+
+    #cover p {
+      font-size: 1.2em;
+      color: #5c3c0d;
+      margin-top: 10px;
+    }
+
+    #cover img {
+      width: 250px;
+      margin-top: 20px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 80%;
+    }
+
+    /* Responsif */
+    @media (max-width: 768px) {
+      nav {
+        transform: translateX(-100%);
+      }
+
+      nav.open {
+        transform: translateX(0);
+      }
+
+      main {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .menu-toggle {
+        font-size: 22px;
+        padding: 6px 10px;
+      }
+
+      #cover h1 {
+        font-size: 2em;
+      }
+
+      table {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Tombol titik tiga -->
+  <button class="menu-toggle" onclick="toggleMenu()">⋮</button>
+
+  <!-- Sidebar -->
+  <nav id="sidebar" class="closed">
+    <h1>🍪 Sweet Cookies</h1>
+    <a onclick="showSection('home')">Home</a>
+    <a onclick="showSection('galeri')">Galeri</a>
+    <a onclick="showSection('kontak')">Kontak</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Cover Section -->
+    <div id="cover">
+      <h1>Welcome to Sweet Cookies!</h1>
+      <p>Kue manis yang renyah dan penuh cinta dari dapur kami 🍪</p>
+      <img src="cookies.jpeg" alt="Cookies Cover">
+    </div>
+
+    <!-- Home Section -->
+    <section id="home">
+      <h2>Tentang Cookies</h2>
+      <p>Cookies adalah kue kecil yang memiliki rasa manis dan renyah. Biasanya terbuat dari bahan dasar tepung, gula, mentega, dan coklat chip. Cookies menjadi camilan yang populer di seluruh dunia karena rasanya yang lezat dan mudah dibuat.</p>
+      <p>Selain sebagai camilan, cookies juga sering dijadikan hadiah atau oleh-oleh. Banyak toko roti yang mengkreasikan cookies dengan berbagai bentuk, warna, dan rasa yang menarik.</p>
+    </section>
+
+    <!-- Galeri Section -->
+    <section id="galeri">
+      <h2>Galeri Cookies</h2>
+      <img src="chocolate chip.jpeg" alt="Chocolate Chip">
+      <img src="butter cookies.jpeg" alt="Butter Cookies">
+      <img src="matcha cookies.jpeg" alt="Matcha Cookies">
+
+      <table>
+        <tr>
+          <th>No</th>
+          <th>Jenis Cookies</th>
+          <th>Rasa</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Chocolate Chip</td>
+          <td>Coklat</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Butter Cookies</td>
+          <td>Vanilla</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Matcha Cookies</td>
+          <td>Teh Hijau</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Kontak Section -->
+    <section id="kontak">
+      <h2>Kontak Kami</h2>
+      <div class="kontak">
+        <a href="https://www.instagram.com/nndaa652?igsh=aXd1ejUxaW5ldTZr" target="_blank">📷 Instagram: @sweetcookies.id</a>
+        <a href="https://wa.me/6285782524797" target="_blank">💬 WhatsApp: +62 857-8252-4797</a>
+        <a href="mailto: if24.erdirakirana@mhs.ubpkarawang.ac.id">📧 Email: info@sweetcookies.id</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+
+    function toggleMenu() {
+      sidebar.classList.toggle('closed');
+      sidebar.classList.toggle('open');
+    }
+
+    function showSection(id) {
+      document.getElementById('cover').classList.add('hidden');
+      document.querySelectorAll('main section').forEach(sec => sec.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+
+      // Tutup sidebar otomatis di layar kecil
+      if (window.innerWidth <= 768) {
+        sidebar.classList.add('closed');
+        sidebar.classList.remove('open');
+      }
+    }
+  </script>
+</body>
+</html>
